@@ -1,0 +1,35 @@
+[[package]]
+name = "pymaxflow"
+version = "1.2.13"
+description = "A mincut/maxflow package for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "urllib3"
+version = "1.26.4"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
+
+[package.extras]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
+brotli = ["brotlipy (>=0.6.0)"]
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "b707599b29e3c45251d1bf02eabce62db19815e6f0e677098834209182ffc9b6"
+
+[metadata.files]
+pymaxflow = [
+    {file = "PyMaxflow-1.2.13-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:8bb33a9d6793e8bb48de0e6644ca037e5f77df64b9ba1c75932dde663ca14e12"},
+    {file = "PyMaxflow-1.2.13.tar.gz", hash = "sha256:947b517ae58a348b17f9599caefc53d58989b9ecaf11f97b4c74208aa3bb1f22"},
+]
+urllib3 = [
+    {file = "urllib3-1.26.4-py2.py3-none-any.whl", hash = "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df"},
+    {file = "urllib3-1.26.4.tar.gz", hash = "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"},
+]
