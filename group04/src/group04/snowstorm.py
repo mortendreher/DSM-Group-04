@@ -27,6 +27,11 @@ def get_childern_ids(conceptid):
     response = requests.get(
         "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid + "/children?form =inferred&includeDescendantCount=false")
     return response.json()
+# KK
+def get_parents_ids(conceptid):
+    response = requests.get(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/"+ conceptid +"/parents?form=inferred&includeDescendantCount=false")
+    return response.json()
 
 
 # KK
@@ -83,10 +88,19 @@ def add_children_to_graph_recursive(conceptid, height):
             # call method recursively with height reduced by 1
     else:
         return
+# KK :
+def add_parents_to_graph(conceptid):
+    #first  getting all of parents IDs by calling get_parents_ids function
+   parents_ids=get_parents_ids(conceptid)
+    #then add edges to graph ,their source parnet with target child ,the parents_ids are sorted by highst level index(0)
+   for i in range (len(parents_ids)-1):
+    G_m.add_edge(parents_ids[i].get("conceptId"), parents_ids[i+1].get("conceptId"), capacity=1.0)
+   #after adding all edges between all parents , then last edge between root node and next level should be added
+   G_m.add_edge(parents_ids[len(parents_ids)-1].get("conceptId"),conceptid, capacity=1.0)
 
 
-add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
-
+#add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
+add_parents_to_graph("272625005")
 # Coloring
 # --------------
 for node in G_m:
@@ -98,8 +112,8 @@ for node in G_m:
 # nx.draw_networkx(G_m)  # draw graph without colors
 print("Graph contains ", G_m.number_of_nodes(), " nodes.")
 # flow_value, flow_dict = nx.maximum_flow(G_m, granddad_id, "361338006")
-flow_value, flow_dict = nx.maximum_flow(G_m, "361716006", "361715005")
-print(flow_value)
+#flow_value, flow_dict = nx.maximum_flow(G_m, "361716006", "361715005")
+#print(flow_value)
 # print(flow_dict)  # produces a LOT of output
 
 nx.draw_networkx(G_m, node_color=color_map)  # draw graph with colors
