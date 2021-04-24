@@ -65,11 +65,11 @@ plt.show()
 
 # MD: recursive adding to graph with a maximum number of steps (>0)
 G_m = nx.DiGraph()  # create graph
-granddad_id = "272625005"  # id for root node
+granddad_id = "272625005"  # id for root node (272625005, 272379006)
 G_m.add_node(granddad_id,)  # add root node to graph (not necessary)
 color_map = []  # create map to color nodes later on
 
-current_maxheight = 3  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
+current_maxheight = 10  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
 
 # Filling graph
 # --------------------
@@ -81,8 +81,8 @@ def add_children_to_graph_recursive(conceptid, height):
     if height > 0:
         children_ids = get_childern_ids(conceptid)  # get ids of children of current node
         for child in children_ids:
-            G_m.add_edge(conceptid, child['conceptId'], capacity=1.0)  # add edge from parent to child
-            G_m.add_edge(child['conceptId'], conceptid, capacity=1.0)
+            G_m.add_edge(conceptid, child['conceptId'], capacity=1.0, weight=1.0)  # add edge from parent to child
+            G_m.add_edge(child['conceptId'], conceptid, capacity=1.0, weight=1.0)
             # add edge from child to parent (cap might have to be changed to -1.0 later on)
             add_children_to_graph_recursive(child['conceptId'], height - 1)
             # call method recursively with height reduced by 1
@@ -99,21 +99,23 @@ def add_parents_to_graph(conceptid):
    G_m.add_edge(parents_ids[len(parents_ids)-1].get("conceptId"),conceptid, capacity=1.0)
 
 
-#add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
-add_parents_to_graph("272625005")
+add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
+# add_parents_to_graph("272625005")
 # Coloring
 # --------------
 for node in G_m:
     if node == granddad_id:
         color_map.append("red")  # root node will be colored red
+    elif node == "361338006":
+        color_map.append("green")
     else:
         color_map.append("blue")  # other nodes will be colored blue
 
 # nx.draw_networkx(G_m)  # draw graph without colors
 print("Graph contains ", G_m.number_of_nodes(), " nodes.")
-# flow_value, flow_dict = nx.maximum_flow(G_m, granddad_id, "361338006")
-#flow_value, flow_dict = nx.maximum_flow(G_m, "361716006", "361715005")
-#print(flow_value)
+flow_value, flow_dict = nx.maximum_flow(G_m, granddad_id, "361338006")
+# flow_value, flow_dict = nx.maximum_flow(G_m, "361716006", "361715005")
+print("Max flow", flow_value)
 # print(flow_dict)  # produces a LOT of output
 
 nx.draw_networkx(G_m, node_color=color_map)  # draw graph with colors
