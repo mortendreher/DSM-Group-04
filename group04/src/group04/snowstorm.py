@@ -56,8 +56,8 @@ for concept in concepts["items"]:
     # print(flow_value)
     # print(flow_dict)
 
-nx.draw_networkx(G)
-plt.show()
+# nx.draw_networkx(G)
+# plt.show()
 
 # starting point
 # 272625005 # Entire body organ (PT)
@@ -68,8 +68,25 @@ G_m = nx.DiGraph()  # create graph
 granddad_id = "272625005"  # id for root node (272625005, 272379006)
 G_m.add_node(granddad_id,)  # add root node to graph (not necessary)
 color_map = []  # create map to color nodes later on
-
 current_maxheight = 10  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
+
+# LA
+# getting the height of a node in the given graph
+# ---------------------------------------------------
+# return value is the height of the node, given as parameter conceptid
+# parameter height is by default 0 and is not mandatory when using the method
+
+def get_height(conceptid, height = 0):
+    if get_parents_ids(conceptid):
+        parent_ids = get_parents_ids(conceptid)
+        for parent in parent_ids:
+            get_height(parent['conceptId'], height + 1)
+    return height
+
+
+# possible output below
+# print(get_height('272625005'))
+
 
 # Filling graph
 # --------------------
