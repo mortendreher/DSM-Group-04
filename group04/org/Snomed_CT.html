@@ -2,8 +2,9 @@
 <html>
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Reza Alijani">
 
-<title>Untitled1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Snomed_CT</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14427,6 +14428,135 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Spezifikation-der-Beziehungsdaten:">Spezifikation der Beziehungsdaten:<a class="anchor-link" href="#Spezifikation-der-Beziehungsdaten:">&#182;</a></h3><p>Die Beziehungsdatei enthält eine Beziehung pro Zeile. Jede Beziehung ist von einem bestimmten Typ und hat ein Quellkonzept und ein Zielkonzept. Ein Beispiel für eine Beziehung ist unten angegeben:<br></p>
+<h5>371883000 |Outpatient procedure| 116680003 |Is a| 71388002 |Procedure|<br></h5>
+<table align="center"  font size= "9">
+    <tr>
+        <td>371883000 |Outpatient procedure|</td>
+        <td>ist das Quellkonzept</td>
+    </tr>
+    <tr>
+        <td>116680003 |Is a|</td>
+        <td>ist das Beziehungstyp-Konzeptund</td>
+    </tr>
+    <tr>
+        <td>71388002 |Procedure|</td>
+        <td>ist das Zielkonzept</td>
+    </tr>
+
+</table>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><br><br></p>
+<table>
+<thead><tr>
+<th style="text-align:center">Feld</th>
+<th style="text-align:center">Datentyp</th>
+<th style="text-align:center">Zweck</th>
+<th style="text-align:center">veränderbar</th>
+<th style="text-align:center">Teil des Primärschlüssels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Identifiziert die Beziehung eindeutig.</td>
+<td style="text-align:center">NO</td>
+<td style="text-align:center">YES (Full/ Snapshot)</td>
+</tr>
+<tr>
+<td style="text-align:center">effectiveTime</td>
+<td style="text-align:center">Time</td>
+<td style="text-align:center">Gibt das inklusive Datum an, an dem der Zustand der Komponentenversion zum damals aktuell gültigen Zustand der Komponente wurde.</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES (Full)<br>Optional (Snapshot)</td>
+</tr>
+<tr>
+<td style="text-align:center">active</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">Gibt an, ob der Zustand der Beziehung aktiv oder inaktiv war <br>(ab dem nominalen Freigabedatum, das durch das Feld effectiveTime angegeben wird.)</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">moduleId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Identifiziert das Modul der Beziehungsversion. Wird auf ein untergeordnetes Element von 900000000000443000 /Module/ innerhalb der Metadatenhierarchie gesetzt.</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">sourceId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Identifiziert das Quellkonzept der Beziehungsversion.<br> Das ist das Konzept, das durch diese Beziehung definiert wird. <br>Wird auf den Bezeichner eines Konzepts gesetzt.</td>
+<td style="text-align:center">NO</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">destinationId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Identifiziert das Konzept, das das Ziel der Beziehungsversion ist.<br>Das ist das Konzept, das den Wert des Attributs darstellt, das durch die Spalte typeId repräsentiert wird.<br>Wird auf den Bezeichner (identifier) eines Konzepts gesetzt.<br>Die Werte, die auf bestimmte Attribute angewendet werden können, sind formal durch das SNOMED CT Machine Readable Concept Model definiert.</td>
+<td style="text-align:center">NO</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">relationshipGroup</td>
+<td style="text-align:center">Integer</td>
+<td style="text-align:center">Fasst Beziehungsversionen zusammen, die Teil einer logisch zusammengehörigen relationshipGroup sind. Alle activeRelationship-Datensätze mit der gleichen relationshipGroup-Nummer und sourceId werden auf diese Weise gruppiert.</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">typeId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Identifiziert das Konzept, das das definierende Attribut (oder den Beziehungstyp) darstellt, das durch diese Beziehungsversion repräsentiert wird.<br>Das ist das Konzept, das den Wert des Attributs darstellt, das durch die Spalte typeId repräsentiert wird.<br>Wird auf den Bezeichner eines Konzepts gesetzt. Das identifizierte Konzept muss entweder 116680003 /Is a/ oder ein Subtyp von 410662002 /Konzeptmodel lattribut/ sein. Die Konzepte, die wie in der Spalte typeId verwendet werden können, sind formal wie folgt definiert:<br> 116680003 /is a/  <b>OR</b> &lt; 410662002 /concept model attribute/ <br> Die Attribute, die auf bestimmte Konzepte  angewendet werden können, sind formal durch das SNOMED CT Machine Readable Concept Model definiert.</td>
+<td style="text-align:center">NO</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">characteristicTypeId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Ein Konzeptaufzählungswert, der den Merkmalstyp der Beziehungsversion identifiziert (d. h. ob die Beziehungsversion definierend, qualifizierend usw. ist)<brj>Dieses Feld ist in der Metadatenhierarchie auf einen Nachfahren von 900000000000449001 /Characteristic type/ gesetzt.</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">modifierId</td>
+<td style="text-align:center">SCTID</td>
+<td style="text-align:center">Ein Konzept-Aufzählungswert, der die Art der Einschränkung der Beschreibungslogik (Description Logic, DL) angibt (some, all, etc.). <br>Wird auf ein untergeordnetes Element von 900000000000450001 /Modifier/ in der Metadatenhierarchie gesetzt. <br>Derzeit wird in dieser Spalte nur der Wert 900000000000451002 /Some/ verwendet, so dass diese Spalte in der Praxis ignoriert werden kann. Zur weiteren Klärung siehe Hinweise zu modifierId.</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><br></p>
+<ul>
+<li><p>Zu jedem Zeitpunkt ist nur ein Beziehungsdatensatz mit demselben id-Feld aktuell. Der aktuelle Datensatz ist derjenige mit der jüngsten effectiveTime vor oder gleich dem betrachteten Zeitpunkt.</p>
+</li>
+<li><p>Wenn das aktive Feld dieses Datensatzes false('0') ist, dann ist die Beziehung zu diesem Zeitpunkt inactive. Wenn das aktive Feld true('1') ist, dann besteht eine Beziehung zwischen den SNOMED CT-Konzepten, die durch sourceId und destinationId identifiziert werden.</p>
+</li>
+<li><p>Die Felder sourceId, destinationId, relationshipGroup, typeId, characteristicTypeId und modifierId ändern sich nicht zwischen zwei Zeilen mit derselben id, d. h. sie sind unveränderlich. Wenn eine Änderung an einem dieser Felder erforderlich ist, wird die aktuelle Zeile deaktiviert (durch Anhängen einer Zeile mit der gleichen id und dem auf 'false' gesetzten Feld "active") und eine neue Zeile mit einer neuen id angehängt.</p>
+</li>
+<li><p>Das relationshipGroup-Feld wird verwendet, um Beziehungen mit demselben sourceId-Feld in einem oder mehreren logischen Sets zu gruppieren. Eine Beziehung mit einem relationshipGroup-Feldwert von '0' wird als nicht gruppiert betrachtet. Alle Beziehungen mit der gleichen sourceId und einer relationshipGroup ungleich Null werden als logisch gruppiert betrachtet.</p>
+</li>
+<li><p>Das relationshipGroup-Feld ist eine Ganzzahl ohne Vorzeichen (unsigned Integer) und nicht auf einen einstelligen Wert beschränkt. Es gibt keine Garantie, dass sie der Reihe nach zugewiesen werden, und die Werte sind nicht konzeptübergreifend eindeutig.
+<br><br><br></p>
+</li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Concept:">Concept:<a class="anchor-link" href="#Concept:">&#182;</a></h2><ul>
 <li>Konzepte sind mit Beschreibungen "descriptions" verknüpft, die menschenlesbare Begriffe zur Beschreibung des Konzepts enthalten.</li>
 <li>Konzept, in seiner allgemeineren Verwendung im Wörterbuch, bezieht sich auf eine Idee oder auf eine Klasse von Entitäten der realen Welt. Bei der Arbeit mit SNOMED CT werden die Wörter "Idee" oder "Bedeutung" anstelle dieser allgemeineren Verwendung von Konzept vorgeschlagen.</li>
@@ -14464,6 +14594,16 @@ Eine erzählende Texterklärung der Bedeutung eines Konzepts, die die maximal zu
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="destination-concept:">destination concept:<a class="anchor-link" href="#destination-concept:">&#182;</a></h3><h4 id="Ein-Konzept,-das-den-Wert-einer-Beziehung-(relationship)-angibt.">Ein Konzept, das den Wert einer Beziehung (relationship) angibt.<a class="anchor-link" href="#Ein-Konzept,-das-den-Wert-einer-Beziehung-(relationship)-angibt.">&#182;</a></h4><ul>
+<li>Das "destination concept" wird durch "destinationId" in der Beziehung identifiziert.</li>
+<li>Das "destination concept" stellt den Wert eines definierenden Merkmals des Quellkonzepts (source concept) dar.</li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="destinationId:">destinationId:<a class="anchor-link" href="#destinationId:">&#182;</a></h3><p>Ein Feld in der Beziehungsfreigabedatei, das einen SNOMED CT-Bezeichner (identifier) enthält, der das Zielkonzept oder den Attributwert der zugehörigen Beziehung darstellt.</p>
 
 </div>
 </div>
@@ -14480,21 +14620,6 @@ Eine erzählende Texterklärung der Bedeutung eines Konzepts, die die maximal zu
 <li><p>Das Attribut 116676008 |Associated morphology| ist eines der Attribute, die auf Konzepte im Bereich 404684003 |Clinical finding| angewendet werden können; und seine Subtypen.</p>
 </li>
 <li><p>sein Bereich umfasst 49755003  Morphologically abnormal structurer (morphologic abnormality)| und seine Subtypen.</p>
-</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="attribute-value-pair:">attribute value pair:<a class="anchor-link" href="#attribute-value-pair:">&#182;</a></h3><ul>
-<li>Eine Kombination aus einem Attributnamen und einem Attributwert, die zur Angabe eines definierenden Merkmals eines Konzepts verwendet wird.</li>
-</ul>
-<ul>
-<li>Der Attributname identifiziert den Typ der Information und der Attributwert liefert einen Wert.</li>
-<li><p>Ein Attributwertepaar kann ein definierendes Merkmal eines Konzepts oder eine Ausdrucksverfeinerung darstellen.</p>
-</li>
-<li><p>In der Beziehungsdatei wird der Attributname durch die relationship.typeId und der Attributwert durch die relationship.destinationId dargestellt.</p>
 </li>
 </ul>
 
