@@ -22,6 +22,20 @@ def get_descriptionid_byconceptid(Conceptid):
     return response.json()
 
 
+# MD: this doesnt work and I might know why
+# 64572001
+def get_inbound_relationships(conceptid):
+    response = requests.get(
+        "https://snowstorm.test-nictiz.nl/MAIN/concepts/" + conceptid +
+        "/inbound-relationships")
+    print(response.url)
+    return response.json()
+
+
+result = get_inbound_relationships("10200004")
+# print(result)
+print("a"+result["inboundRelationships"][0]["sourceId"])
+
 # KK
 def get_childern_ids(conceptid):
     response = requests.get(
@@ -68,7 +82,8 @@ G_m = nx.DiGraph()  # create graph
 granddad_id = "272625005"  # id for root node (272625005, 272379006)
 G_m.add_node(granddad_id,)  # add root node to graph (not necessary)
 color_map = []  # create map to color nodes later on
-current_maxheight = 10  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
+
+current_maxheight = 3  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
 
 # LA
 # getting the height of a node in the given graph
@@ -117,7 +132,7 @@ def add_parents_to_graph(conceptid):
 
 
 add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
-# add_parents_to_graph("272625005")
+add_parents_to_graph("272625005")
 # Coloring
 # --------------
 for node in G_m:
