@@ -91,16 +91,18 @@ current_maxheight = 3  # fixed maximum for number of steps -> 3 or less can be d
 # return value is the height of the node, given as parameter conceptid
 # parameter height is by default 0 and is not mandatory when using the method
 
-def get_height(conceptid, height = 0):
-    if get_parents_ids(conceptid):
+
+def get_height(conceptid, height):
+    if conceptid != granddad_id:
         parent_ids = get_parents_ids(conceptid)
         for parent in parent_ids:
-            get_height(parent['conceptId'], height + 1)
+            height += 1
+            get_height(parent['conceptId'], height)
     return height
 
 
 # possible output below
-# print(get_height('272625005'))
+# print(get_height('361338006', 0))
 
 
 # Filling graph
