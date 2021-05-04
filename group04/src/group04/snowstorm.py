@@ -36,7 +36,7 @@ def get_descriptionid_byconceptid(Conceptid):
     return response.json()
 
 
-# MD: this doesnt work and I might know why
+# MD: returns all relationships inbound to a node given conceptid
 # 64572001
 def get_inbound_relationships(conceptid):
     params = {"conceptId": conceptid}
@@ -45,9 +45,9 @@ def get_inbound_relationships(conceptid):
     return response.json()
 
 
-result = get_inbound_relationships("10200004")
+# result = get_inbound_relationships("10200004")
 # print(result)
-print("a"+result["inboundRelationships"][0]["sourceId"])
+# print("a"+result["inboundRelationships"][0]["sourceId"])
 
 # KK
 def get_childern_ids(conceptid):
@@ -66,15 +66,15 @@ def get_parents_ids(conceptid):
 
 
 # KK
-childernids = get_childern_ids("10200004")
-for childid in childernids:
-    G.add_edge("10200004", childid['conceptId'], capacity=1.0)
+# childernids = get_childern_ids("10200004")
+# for childid in childernids:
+#    G.add_edge("10200004", childid['conceptId'], capacity=1.0)
     # print(childid["conceptId"])
 
 # KK
-descriptionids = get_descriptionid_byconceptid(10200004)
-for descid in descriptionids["items"]:
-    print(descid["descriptionId"])
+# descriptionids = get_descriptionid_byconceptid(10200004)
+# for descid in descriptionids["items"]:
+#    print(descid["descriptionId"])
 
 name = 'liver'
 
@@ -96,11 +96,11 @@ for concept in concepts["items"]:
 
 # MD: recursive adding to graph with a maximum number of steps (>0)
 G_m = nx.DiGraph()  # create graph
-granddad_id = "272625005"  # id for root node (272625005, 272379006)
+granddad_id = "138875005"  # id for root node (272625005, 272379006), snomed root: 138875005
 G_m.add_node(granddad_id,)  # add root node to graph (not necessary)
 color_map = []  # create map to color nodes later on
 
-current_maxheight = 3  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
+current_maxheight = 2  # fixed maximum for number of steps -> 3 or less can be displayed as a graph
 
 # LA
 # getting the height of a node in the given graph
@@ -118,9 +118,24 @@ def get_height(conceptid, height):
     return height
 
 
-# possible output below
-# print(get_height('361338006', 0))
+# MD: Compute depth for a given conceptid
+# --------------------------------------
+# returns depth of the node in graph (number of steps from root node)
+# parameter is a conceptid, returns 0 if conceptid is root node
+def get_depth(conceptid):
+    depth = 0
+    while conceptid != granddad_id:
+        conceptid = get_parents_ids(conceptid)[0]['conceptId']
+        depth += 1
+    return depth
 
+
+# possible output below
+# print("height", get_height("307824009",0))
+print("depth", get_depth("83299001"))
+print("depth 2: ", get_depth("307824009"))
+
+# print(get_parents_ids("370136006")[0]['conceptId'])
 
 # Filling graph
 # --------------------
@@ -151,20 +166,20 @@ def add_parents_to_graph(conceptid):
 
 
 add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once
-add_parents_to_graph("272625005")
+# add_parents_to_graph("272625005") # Please don't do this to the same graph - it adds no information!!
 # Coloring
 # --------------
 for node in G_m:
     if node == granddad_id:
         color_map.append("red")  # root node will be colored red
-    elif node == "361338006":
+    elif node == "370136006":
         color_map.append("green")
     else:
         color_map.append("blue")  # other nodes will be colored blue
 
 # nx.draw_networkx(G_m)  # draw graph without colors
 print("Graph contains ", G_m.number_of_nodes(), " nodes.")
-flow_value, flow_dict = nx.maximum_flow(G_m, granddad_id, "361338006")
+flow_value, flow_dict = nx.maximum_flow(G_m, granddad_id, "370136006")
 # flow_value, flow_dict = nx.maximum_flow(G_m, "361716006", "361715005")
 print("Max flow", flow_value)
 # print(flow_dict)  # produces a LOT of output
