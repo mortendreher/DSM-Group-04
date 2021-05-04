@@ -2,13 +2,26 @@ import numpy as np
 import requests
 import networkx as nx
 import matplotlib.pyplot as plt
+import time
 
 G = nx.DiGraph()
+request_count = 0
+
+# LA / MD
+# group server requests, add short pause (1 sec) after 20 requests
+# call this method when doing server requests
+
+
+def request_snowstorm_burst(url, params):
+    if request_count % 20 == 0:
+        time.sleep(1)
+    request_count + 1
+    return requests.get(url, params)
 
 
 def find_concepts(keyword: str) -> dict:
     params = {"term": keyword}
-    response = requests.get(
+    response = request_snowstorm_burst(
         "https://snowstorm.test-nictiz.nl/MAIN/concepts", params=params
     )
     return response.json()
@@ -16,8 +29,9 @@ def find_concepts(keyword: str) -> dict:
 
 # KK
 def get_descriptionid_byconceptid(Conceptid):
-    response = requests.get(
-        "https://snowstorm.test-nictiz.nl/MAIN/descriptions?", params={"conceptId": Conceptid})
+    params = {"conceptId": Conceptid}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/MAIN/descriptions?", params=params)
 
     return response.json()
 
@@ -25,10 +39,9 @@ def get_descriptionid_byconceptid(Conceptid):
 # MD: this doesnt work and I might know why
 # 64572001
 def get_inbound_relationships(conceptid):
-    response = requests.get(
-        "https://snowstorm.test-nictiz.nl/MAIN/concepts/" + conceptid +
-        "/inbound-relationships")
-    print(response.url)
+    params = {"conceptId": conceptid}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/MAIN/concepts/"+conceptid+"/inbound-relationships", params=params)
     return response.json()
 
 
@@ -38,13 +51,17 @@ print("a"+result["inboundRelationships"][0]["sourceId"])
 
 # KK
 def get_childern_ids(conceptid):
-    response = requests.get(
-        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid + "/children?form =inferred&includeDescendantCount=false")
+    params = {"conceptId": conceptid}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
+        "/children?form =inferred&includeDescendantCount=false", params=params)
     return response.json()
 # KK
 def get_parents_ids(conceptid):
-    response = requests.get(
-        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/"+ conceptid +"/parents?form=inferred&includeDescendantCount=false")
+    params = {"conceptId": conceptid}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
+        "/parents?form=inferred&includeDescendantCount=false", params=params)
     return response.json()
 
 
