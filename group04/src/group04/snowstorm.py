@@ -4,6 +4,23 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import time
 
+# LA
+# class Node
+# Variables: conceptid, parentid, descriptionid, active (default True)
+# Variables outside of the constructor: depth
+
+
+class Node(object):
+    depth = None
+
+    def __init__(self, conceptid, parentid, descriptionid, active=True):
+        self.conceptid = conceptid
+        self.parentid = parentid
+        self.descriptionid = descriptionid
+        self.active = active
+        self.depth = get_depth(conceptid)
+
+
 G = nx.DiGraph()
 request_count = 0
 
