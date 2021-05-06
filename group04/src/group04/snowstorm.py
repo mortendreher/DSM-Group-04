@@ -3,6 +3,7 @@ import requests
 import networkx as nx
 import matplotlib.pyplot as plt
 import time
+import pandas as pd
 
 # LA
 # class Node
@@ -180,6 +181,33 @@ def add_parents_to_graph(conceptid):
     G_m.add_edge(parents_ids[i].get("conceptId"), parents_ids[i+1].get("conceptId"), capacity=1.0)
    #after adding all edges between all parents , then last edge between root node and next level should be added
    G_m.add_edge(parents_ids[len(parents_ids)-1].get("conceptId"),conceptid, capacity=1.0)
+
+
+
+# R:
+# adds the first found id to the entered dataframe using the function "find_concepts"
+def add_first_id_found(file):
+    counter = 0
+    for x in file["Parametername"]:
+        datas = find_concepts(file.loc[counter][0])
+        # if something was found
+        if(len(datas['items']) > 0):
+#             print(datas["items"][0]["id"],datas["items"][0]["fsn"]["term"], '\t',  file.loc[counter][1])
+            #create new columns and enter the first id and term
+            file.loc[counter,['id']] = datas["items"][0]["id"]
+            file.loc[counter,['term']] = datas["items"][0]["fsn"]["term"]
+
+        counter += 1
+
+    return(file)
+
+# read csv file
+# ihCCOntology_Excerpt = pd.read_csv('ihCCOntology_Excerpt.csv')
+# ihCCOntology_Excerpt.drop(columns=['Unnamed: 0'], inplace=True)
+
+# ihc = add_first_id_found(ihCCOntology_Excerpt)
+# print(ihc)
+
 
 
 add_children_to_graph_recursive(granddad_id, current_maxheight)  # call method once

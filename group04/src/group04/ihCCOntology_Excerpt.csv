@@ -1,0 +1,50 @@
+﻿,Parametername,IRI,Measurement-type
+,Age,http://sfb125.de/ontology/factorontology/age,Numerical
+,Height,http://sfb125.de/ontology/factorontology/height,Numerical
+,Weight,http://sfb125.de/ontology/factorontology/weight,Numerical
+,Anatomical Reconstructibility,http://sfb125.de/ontology/ihCCApplicationOntology/anatomical_reconstructibility,Boolean
+,Ascites,http://sfb125.de/ontology/ihCCApplicationOntology/ascites_observation,Boolean
+,Cholangitis,http://sfb125.de/ontology/ihCCApplicationOntology/cholangitis_observation,Boolean
+,Chronic Hepatitis B,http://sfb125.de/ontology/ihCCApplicationOntology/chronic_hepatitis_b_observation,Boolean
+,Chronic Hepatitis C,http://sfb125.de/ontology/ihCCApplicationOntology/chronic_hepatitis_c_observation,Boolean
+,Cirrhosis,http://sfb125.de/ontology/ihCCApplicationOntology/cirrhosis_observation,Boolean
+,COPD,http://sfb125.de/ontology/ihCCApplicationOntology/chronic_obstructive_pulmonary_disease_observation,Boolean
+,Fatty Liver,http://sfb125.de/ontology/ihCCApplicationOntology/fatty_liver_observation,Boolean
+,Heart Failure,http://sfb125.de/ontology/ihCCApplicationOntology/heart_failure_observation,Boolean
+,Peritoneal Carcinomatosis,http://sfb125.de/ontology/ihCCApplicationOntology/peritoneal_carcinomatosis_observation,Boolean
+,Portal Hypertension,http://sfb125.de/ontology/ihCCApplicationOntology/portal_hypertension_observation,Boolean
+,Renal Failure,http://sfb125.de/ontology/ihCCApplicationOntology/renal_failure_observation,Boolean
+,Tumor Observation,http://sfb125.de/ontology/ihCCApplicationOntology/tumor_observation,Boolean
+,Surgical Reconstructibility (biliary),http://sfb125.de/ontology/ihCCApplicationOntology/biliary_reconstruction_possible,Boolean
+,Surgical Reconstructibility (vascular),http://sfb125.de/ontology/ihCCApplicationOntology/vascular_reconstruction_possible,Boolean
+,ASA,http://sfb125.de/ontology/ihCCApplicationOntology/ASA,Categorical
+,Ascites Severity,http://sfb125.de/ontology/ihCCApplicationOntology/ascites_severity,Categorical
+,Cirrhosis Staging,http://sfb125.de/ontology/ihCCApplicationOntology/cirrhosis_staging,Categorical
+,Clinical Distant Metastasis Staging,http://sfb125.de/ontology/ihCCApplicationOntology/distant_metastases_staging,Categorical
+,Clinical Lymph Node Staging,http://sfb125.de/ontology/ihCCApplicationOntology/lymph_node_staging,Categorical
+,COPD (GOLD Classification),http://sfb125.de/ontology/ihCCApplicationOntology/COPD_staging,Categorical
+,Fatty Liver Severity,http://sfb125.de/ontology/ihCCApplicationOntology/fatty_liver_severity,Categorical
+,Heart Failure (NYHA Classification),http://sfb125.de/ontology/ihCCApplicationOntology/heart_failure_staging,Categorical
+,Albumin,http://sfb125.de/ontology/ihCCApplicationOntology/albumin_concentration,Numerical
+,AP,http://sfb125.de/ontology/ihCCApplicationOntology/alcalic_phosphatase,Numerical
+,Direct Bilirubin,http://sfb125.de/ontology/ihCCApplicationOntology/bilirubin_direct,Numerical
+,CRP,http://sfb125.de/ontology/ihCCApplicationOntology/c_reactive_protein,Numerical
+,GGT,http://sfb125.de/ontology/ihCCApplicationOntology/gamma_glutamyltransferase,Numerical
+,GOT,http://sfb125.de/ontology/ihCCApplicationOntology/glutamic_oxaloacetic_transaminase,Numerical
+,GPT,http://sfb125.de/ontology/ihCCApplicationOntology/glutamic-pyruvic_transaminase,Numerical
+,Hemoglobin,http://sfb125.de/ontology/ihCCApplicationOntology/hemoglobin,Numerical
+,Total Bilirubin,http://sfb125.de/ontology/ihCCApplicationOntology/bilirubin_concentration,Numerical
+,AFP,http://sfb125.de/ontology/ihCCApplicationOntology/alpha_fetoprotein,Numerical
+,CA19-9,http://sfb125.de/ontology/ihCCApplicationOntology/carbohydrate_antigen_19-9_concentration,Numerical
+,CEA,http://sfb125.de/ontology/ihCCApplicationOntology/carcinoembryonic_antigen_concentration,Numerical
+,Number of Tumors,http://sfb125.de/ontology/ihCCApplicationOntology/number_of_tumors,Numerical
+,Platelet,http://sfb125.de/ontology/ihCCApplicationOntology/platelet_concentration,Numerical
+,WBC,http://sfb125.de/ontology/ihCCApplicationOntology/white_blood_cell_concentration,Numerical
+,Prothrombin Time (Quick),http://sfb125.de/ontology/ihCCApplicationOntology/prothrombin_time_fraction,Numerical
+,RLV,http://sfb125.de/ontology/ihCCApplicationOntology/estimated_remnant_liver_volume,Boolean
+,GFR,http://sfb125.de/ontology/ihCCApplicationOntology/glomerular_filtration_rate,Categorical
+,Tumor Size,http://sfb125.de/ontology/ihCCApplicationOntology/tumor_size,Numerical
+,Postoperative ICU Care Availablity,http://sfb125.de/ontology/ihCCApplicationOntology/postoperative_ICU_care_availability,Categorical
+,ALBI score,http://sfb125.de/ontology/ihCCApplicationOntology/albi_score,Numerical
+,BMI,http://sfb125.de/ontology/ihCCApplicationOntology/body_mass_index,Numerical
+,Gender,http://sfb125.de/ontology/factorontology/gender
