@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Reza Alijani">
 
-<title>Snomed_CT</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Untitled1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14430,20 +14430,19 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Spezifikation-der-Beziehungsdaten:">Spezifikation der Beziehungsdaten:<a class="anchor-link" href="#Spezifikation-der-Beziehungsdaten:">&#182;</a></h3><p>Die Beziehungsdatei enthält eine Beziehung pro Zeile. Jede Beziehung ist von einem bestimmten Typ und hat ein Quellkonzept und ein Zielkonzept. Ein Beispiel für eine Beziehung ist unten angegeben:<br></p>
 <h5>371883000 |Outpatient procedure| 116680003 |Is a| 71388002 |Procedure|<br></h5>
-<table align="center"  font size= "9">
+<table align="left" font size="9">
     <tr>
         <td>371883000 |Outpatient procedure|</td>
         <td>ist das Quellkonzept</td>
     </tr>
     <tr>
         <td>116680003 |Is a|</td>
-        <td>ist das Beziehungstyp-Konzeptund</td>
+        <td>ist das Beziehungstyp-Konzept</td>
     </tr>
     <tr>
         <td>71388002 |Procedure|</td>
         <td>ist das Zielkonzept</td>
     </tr>
-
 </table>
 </div>
 </div>
@@ -14533,7 +14532,6 @@ a.anchor-link {
 </tbody>
 </table>
 
-
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
@@ -14551,6 +14549,46 @@ a.anchor-link {
 <li><p>Das relationshipGroup-Feld ist eine Ganzzahl ohne Vorzeichen (unsigned Integer) und nicht auf einen einstelligen Wert beschränkt. Es gibt keine Garantie, dass sie der Reihe nach zugewiesen werden, und die Werte sind nicht konzeptübergreifend eindeutig.
 <br><br><br></p>
 </li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="mapping">mapping<a class="anchor-link" href="#mapping">&#182;</a></h3><h5 id="Der-Prozess-der-Konvertierung-von-Daten-von-einem-Codesystem,-einer-Klassifizierung-oder-Terminologie-in-ein-anderes-Codesystem,-eine-andere-Klassifizierung-oder-Terminologie.">Der Prozess der Konvertierung von Daten von einem Codesystem, einer Klassifizierung oder Terminologie in ein anderes Codesystem, eine andere Klassifizierung oder Terminologie.<a class="anchor-link" href="#Der-Prozess-der-Konvertierung-von-Daten-von-einem-Codesystem,-einer-Klassifizierung-oder-Terminologie-in-ein-anderes-Codesystem,-eine-andere-Klassifizierung-oder-Terminologie.">&#182;</a></h5><ul>
+<li>Der Mapping-Prozess umfasst die Erstellung und Pflege von Ressourcen, die für die Konvertierung von Daten verwendet werden.</li>
+<li>SNOMED CT Mapping-Ressourcen werden als "mapping reference sets" verteilt.</li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="mapping-reference-set">mapping reference set<a class="anchor-link" href="#mapping-reference-set">&#182;</a></h3><h5 id="Ein-Referenzsatz,-der-den-Prozess-der-Zuordnung-von-Daten-von-einem-Codesystem,-einer-Klassifikation-oder-Terminologie-zu-einem-anderen-Codesystem,-einer-Klassifikation-oder-Terminologie-unterst&#252;tzen-soll.">Ein Referenzsatz, der den Prozess der Zuordnung von Daten von einem Codesystem, einer Klassifikation oder Terminologie zu einem anderen Codesystem, einer Klassifikation oder Terminologie unterst&#252;tzen soll.<a class="anchor-link" href="#Ein-Referenzsatz,-der-den-Prozess-der-Zuordnung-von-Daten-von-einem-Codesystem,-einer-Klassifikation-oder-Terminologie-zu-einem-anderen-Codesystem,-einer-Klassifikation-oder-Terminologie-unterst&#252;tzen-soll.">&#182;</a></h5><p>Es gibt mehrere Arten von Mapping-Referenzsätzen, die jeweils unterschiedliche Arten von Mapping unterstützen.</p>
+<ul>
+<li><p><b> Simple Map Reference Sets</b><br>
+Ein <code>900000000000496009 |Simple map reference set|</code> ermöglicht die Darstellung von einfachen Zuordnungen zwischen SNOMED CT-Konzepten und Werten in anderen Kodierungssystemen. Es gibt keine Einschränkungen in Bezug auf die Anzahl der unterstützten Kodierschemata, die Anzahl der Kodes innerhalb eines bestimmten Schemas, die durch ein einzelnes SNOMED CT-Konzept abgebildet werden, oder die Anzahl der SNOMED CT-Konzepte, die auf einen bestimmten Kode abgebildet werden. Diese Art von Referenzsatz ist jedoch in der Regel nur dann geeignet, wenn es eine enge "Eins-zu-eins"-Abbildung zwischen SNOMED CT-Konzepten und kodierten Werten in einem anderen Kodesystem gibt.</p>
+</li>
+<li><p><b> Complex and Extended Map Reference Sets</b> <br>
+unterstützen Maps, wenn zusätzliche Informationen benötigt werden, um die korrekte Zuordnung von SNOMED CT zu einer statistischen Klassifikation wie ICD-10 zu bestimmen.<br>
+Ein <code>447250001 |Complex map type reference set|</code> ermöglicht die Darstellung von Maps, bei denen jedes SNOMED CT-Konzept auf einen oder mehrere Codes in einem Zielschema <em>(target scheme)</em> abgebildet werden kann. Der Typ des Referenzsatzes unterstützt den allgemeinen Satz von Abbildungsdaten, die erforderlich sind, um zur Laufzeit einen Zielcode aus einer Reihe alternativer Codes auswählen zu können. Er unterstützt die Auswahl des Zielcodes, indem er die Aufnahme von maschinenlesbaren Regeln and/or menschenlesbaren Hinweisen ermöglicht. Ein <code>609331003 |Extended map type reference set|</code> fügt ein zusätzliches Feld hinzu, um die Kategorisierung von Maps zu ermöglichen.</p>
+</li>
+<li><p><b> Map Correlation and Origin Reference Sets</b> <br>
+unterstützen Mappings zu oder von einem anderen Codesystem, wobei eine zusätzliche Anforderung besteht, Fälle zu erfassen, in denen ein Code in einem Codesystem speziell zu dem Zweck hinzugefügt wurde, ein Map aus dem Codesystem zu ermöglichen, in dem der Code seinen Ursprung hat.</p>
+</li>
+<li><b> Code to Expression Reference Sets</b> <br>
+unterstützen Zuordnungen aus anderen Codesystemen in Fällen, in denen einige oder alle Quellcodes durch einen nachkoordinierten Ausdruck dargestellt werden müssen.<br>
+Das <code>705109006|Code to expression type reference set|</code> dient dazu, Assoziationen zwischen Codes in einem anderen Codesystem (other-codes) und SNOMED CT-Konzepten zu ermöglichen, wobei die folgenden Einschränkungen gelten:<ol>
+  <li>Einige der sonstigen Codes (nicht SNOMED CT-Codes) können nicht auf ein einzelnes SNOMED CT-Konzept abgebildet werden.</li>
+  <li>Lizenzbedingungen (oder andere Erwägungen) verhindern das Hinzufügen neuer SNOMED CT-Konzepte, die die gleiche Bedeutung wie die anderen Codes darstellen.</li>
+  <li>Die anderen Codes können unter Verwendung des SNOMED-Konzeptmodells logisch definiert werden, um die gleiche Bedeutung (ausreichend definiert) oder eine ähnliche, jedoch weniger spezifische Bedeutung (primitiv) zu repräsentieren.</li>
+  <li>Andere Anforderungen, die denen für das Mapping ähnlich sind, können ebenfalls gelten:
+      <ul>
+          <li>Ein Hinweis auf den Grad der Korrelation zwischen dem anderen Code und dem SNOMED CT-Ausdruck.</li>
+          <li>Ein Hinweis darauf, ob der andere Code vor einer Einzelkonzeptdarstellung dieser Bedeutung in SNOMED CT erstellt wurde oder ob die Einzelkonzeptdarstellung in SNOMED CT der Erstellung der Assoziation vorausging.</li>
+      </ul>
+  </li>
+</ol></li>
 </ul>
 
 </div>
