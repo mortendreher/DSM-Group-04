@@ -92,15 +92,14 @@ def get_common_parent(conceptid_1, conceptid_2):
         return conceptid_1
     else:
         list_1 = walk_to_granddad(conceptid_1)
-        print("Node 1:", list_1)
         list_2 = walk_to_granddad(conceptid_2)
-        print("Node 2:", list_2)
-        # consider re-writing in case of runtime issues
+        # consider re-writing this in case of runtime issues
         for i in list_1:
             for j in list_2:
                 if i == j:
                     return i
         return None
+        # if None is ever returned, something is really wrong
 
 
 # MD: method that returns the ID of a parent node rather than the entire parent node
@@ -113,6 +112,7 @@ def get_parent_id_only(conceptid):
 
 
 # MD: a method that saves all nodes traversed on a path from a conceptid to SNOMED root to a list and returns it
+# includes both conceptid and granddad_id
 def walk_to_granddad(conceptid):
     nodes_list = []
     while conceptid != granddad_id:
@@ -122,7 +122,60 @@ def walk_to_granddad(conceptid):
     return nodes_list
 
 
+# MD: a method that saves all nodes traversed on a path from a conceptid to a given ancestor node to a list
+# and returns it. conceptid is included, ancestor id is not included
+def walk_to_ancestor(conceptid_start, ancestorid):
+    nodes_list = []
+    conceptid = conceptid_start
+    cutoff = 0
+    while conceptid != ancestorid and cutoff < 500:
+        nodes_list.append(conceptid)
+        conceptid = get_parent_id_only(conceptid)
+    return nodes_list
+
+
 print(get_common_parent("266474003", "197402000"))  # should print 404684003 (Clinical finding)
+
+
+# MD: create a graph ranging from two conceptids to their lowest common parent
+def create_spanning_tree(conceptid_1, conceptid_2):
+    tree_root = get_common_parent(conceptid_1, conceptid_2)
+    path_node1 = walk_to_ancestor(conceptid_1, tree_root)
+    path_node2 = walk_to_ancestor(conceptid_2, tree_root)
+    G_span = nx.DiGraph()
+    G_span.add_node(tree_root)
+    current_knot = tree_root
+    # for both paths, add node from current knot (at start: lowest common parent) to last element of list
+    # last element of list becomes current knot and is removed afterwards. continue until list empty
+    while len(path_node1) > 0:
+        G_span.add_edge(current_knot, path_node1[(len(path_node1)-1)], weight=1.0, capacity=1.0)
+        G_span.add_edge(path_node1[(len(path_node1) - 1)], current_knot, weight=1.0, capacity=1.0)
+        current_knot = path_node1[(len(path_node1)-1)]
+        del path_node1[-1]
+    current_knot = tree_root
+    while len(path_node2) > 0:
+        G_span.add_edge(current_knot, path_node2[(len(path_node2)-1)], weight=1.0, capacity=1.0)
+        G_span.add_edge(path_node2[(len(path_node2) - 1)], current_knot,  weight=1.0, capacity=1.0)
+        current_knot = path_node2[(len(path_node2)-1)]
+        del path_node2[-1]
+
+    return G_span
+
+
+color_map = []
+example_node = get_common_parent("266474003", "197402000")
+G_span = create_spanning_tree("266474003", "197402000")
+for node in G_span:
+    if node == granddad_id:
+        color_map.append("red")  # root node will be colored red (if exists in graph)
+    elif node == example_node:
+        color_map.append("green")  # example node (lowest common parent) marked green
+    else:
+        color_map.append("blue")  # other nodes will be colored blue
+
+nx.draw_networkx(G_span, node_color=color_map)  # draw graph
+plt.show()
+
 
 # KK
 # childernids = get_childern_ids("10200004")
