@@ -24,7 +24,7 @@ class Node(object):
 
 G = nx.DiGraph()
 request_count = 0
-
+granddad_id = "138875005"  # id for root node (272625005, 272379006), snomed root: 138875005
 # LA / MD
 # group server requests, add short pause (1 sec) after 20 requests
 # call this method when doing server requests
@@ -46,8 +46,8 @@ def find_concepts(keyword: str) -> dict:
 
 
 # KK
-def get_descriptionid_byconceptid(Conceptid):
-    params = {"conceptId": Conceptid}
+def get_descriptionid_byconceptid(conceptid):
+    params = {"conceptId": conceptid}
     response = request_snowstorm_burst(
         "https://snowstorm.test-nictiz.nl/MAIN/descriptions?", params=params)
 
@@ -67,6 +67,7 @@ def get_inbound_relationships(conceptid):
 # print(result)
 # print("a"+result["inboundRelationships"][0]["sourceId"])
 
+
 # KK
 def get_childern_ids(conceptid):
     params = {"conceptId": conceptid}
@@ -74,6 +75,8 @@ def get_childern_ids(conceptid):
         "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
         "/children?form =inferred&includeDescendantCount=false", params=params)
     return response.json()
+
+
 # KK
 def get_parents_ids(conceptid):
     params = {"conceptId": conceptid}
@@ -82,6 +85,44 @@ def get_parents_ids(conceptid):
         "/parents?form=inferred&includeDescendantCount=false", params=params)
     return response.json()
 
+
+# MD: find lowest common parent for two nodes
+def get_common_parent(conceptid_1, conceptid_2):
+    if conceptid_1 == conceptid_2 or conceptid_1 == granddad_id or conceptid_2 == granddad_id:
+        return conceptid_1
+    else:
+        list_1 = walk_to_granddad(conceptid_1)
+        print("Node 1:", list_1)
+        list_2 = walk_to_granddad(conceptid_2)
+        print("Node 2:", list_2)
+        # consider re-writing in case of runtime issues
+        for i in list_1:
+            for j in list_2:
+                if i == j:
+                    return i
+        return None
+
+
+# MD: method that returns the ID of a parent node rather than the entire parent node
+def get_parent_id_only(conceptid):
+    params = {"conceptId": conceptid}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
+        "/parents", params=params)
+    return response.json()[0]['conceptId']
+
+
+# MD: a method that saves all nodes traversed on a path from a conceptid to SNOMED root to a list and returns it
+def walk_to_granddad(conceptid):
+    nodes_list = []
+    while conceptid != granddad_id:
+        nodes_list.append(conceptid)
+        conceptid = get_parent_id_only(conceptid)
+    nodes_list.append(granddad_id)
+    return nodes_list
+
+
+print(get_common_parent("266474003", "197402000"))  # should print 404684003 (Clinical finding)
 
 # KK
 # childernids = get_childern_ids("10200004")
@@ -114,7 +155,7 @@ for concept in concepts["items"]:
 
 # MD: recursive adding to graph with a maximum number of steps (>0)
 G_m = nx.DiGraph()  # create graph
-granddad_id = "138875005"  # id for root node (272625005, 272379006), snomed root: 138875005
+
 G_m.add_node(granddad_id,)  # add root node to graph (not necessary)
 color_map = []  # create map to color nodes later on
 
@@ -150,7 +191,7 @@ def get_depth(conceptid):
 
 # possible output below
 # print("height", get_height("307824009",0))
-print("depth", get_depth("83299001"))
+print("depth 1: ", get_depth("83299001"))
 print("depth 2: ", get_depth("307824009"))
 
 # print(get_parents_ids("370136006")[0]['conceptId'])
