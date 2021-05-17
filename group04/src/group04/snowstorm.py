@@ -69,12 +69,16 @@ def get_inbound_relationships(conceptid):
 
 
 # KK
-def get_childern_ids(conceptid):
+def get_children_ids(conceptid):
     params = {"conceptId": conceptid}
     response = request_snowstorm_burst(
         "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
         "/children?form =inferred&includeDescendantCount=false", params=params)
     return response.json()
+
+
+print(len(get_children_ids(granddad_id)))
+print(len(get_children_ids("409766009")))  # node with no children -> len = 0
 
 
 # KK
@@ -131,6 +135,7 @@ def walk_to_ancestor(conceptid_start, ancestorid):
     while conceptid != ancestorid and cutoff < 500:
         nodes_list.append(conceptid)
         conceptid = get_parent_id_only(conceptid)
+        cutoff += 1
     return nodes_list
 
 
@@ -257,7 +262,7 @@ print("depth 2: ", get_depth("307824009"))
 
 def add_children_to_graph_recursive(conceptid, height):
     if height > 0:
-        children_ids = get_childern_ids(conceptid)  # get ids of children of current node
+        children_ids = get_children_ids(conceptid)  # get ids of children of current node
         for child in children_ids:
             G_m.add_edge(conceptid, child['conceptId'], capacity=1.0, weight=1.0)  # add edge from parent to child
             G_m.add_edge(child['conceptId'], conceptid, capacity=1.0, weight=1.0)
@@ -325,5 +330,7 @@ print("Max flow", flow_value)
 
 nx.draw_networkx(G_m, node_color=color_map)  # draw graph with colors
 plt.show()  # finally, show plot
+
+
 
 
