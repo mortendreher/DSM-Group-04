@@ -3,6 +3,7 @@ import requests
 import networkx as nx
 import matplotlib.pyplot as plt
 import time
+import csv
 import pandas as pd
 
 # LA
@@ -69,7 +70,7 @@ def get_inbound_relationships(conceptid):
 
 
 # KK
-def get_children_ids(conceptid):
+def get_children(conceptid):
     params = {"conceptId": conceptid}
     response = request_snowstorm_burst(
         "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
@@ -77,8 +78,21 @@ def get_children_ids(conceptid):
     return response.json()
 
 
-print(len(get_children_ids(granddad_id)))
-print(len(get_children_ids("409766009")))  # node with no children -> len = 0
+# MD: get IDs of children nodes instead of entire children nodes
+def get_children_ids(conceptid):
+    params = {"conceptId": str(conceptid)}
+    response = request_snowstorm_burst(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + str(conceptid) +
+        "/children?form =inferred&includeDescendantCount=false", params=params)
+    children = response.json()
+    children_ids = []
+    for child in children:
+        children_ids.append(child['conceptId'])
+    return children_ids
+
+
+# print(get_children_ids(granddad_id))
+# print(len(get_children_ids("409766009")))  # node with no children -> len = 0
 
 
 # KK
@@ -139,7 +153,7 @@ def walk_to_ancestor(conceptid_start, ancestorid):
     return nodes_list
 
 
-print(get_common_parent("266474003", "197402000"))  # should print 404684003 (Clinical finding)
+#print(get_common_parent("266474003", "197402000"))  # should print 404684003 (Clinical finding)
 
 
 # MD: create a graph ranging from two conceptids to their lowest common parent
@@ -168,18 +182,61 @@ def create_spanning_tree(conceptid_1, conceptid_2):
 
 
 color_map = []
-example_node = get_common_parent("266474003", "197402000")
-G_span = create_spanning_tree("266474003", "197402000")
-for node in G_span:
-    if node == granddad_id:
-        color_map.append("red")  # root node will be colored red (if exists in graph)
-    elif node == example_node:
-        color_map.append("green")  # example node (lowest common parent) marked green
-    else:
-        color_map.append("blue")  # other nodes will be colored blue
+# example_node = get_common_parent("266474003", "197402000")
+# G_span = create_spanning_tree("266474003", "197402000")
+# for node in G_span:
+#   if node == granddad_id:
+#        color_map.append("red")  # root node will be colored red (if exists in graph)
+#    elif node == example_node:
+#        color_map.append("green")  # example node (lowest common parent) marked green
+#    else:
+#        color_map.append("blue")  # other nodes will be colored blue
 
-nx.draw_networkx(G_span, node_color=color_map)  # draw graph
-plt.show()
+# nx.draw_networkx(G_span, node_color=color_map)  # draw graph
+# plt.show()
+
+
+# LA / MD: write graph or parts of it to a csv file
+def write_graph_to_csv():
+    index = 0
+    children = get_children_ids(granddad_id)
+    children_todo = []
+    with open('graph.csv', 'w', newline='') as csvfile:
+        graphwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        graphwriter.writerow({granddad_id + get_node_row(granddad_id)})
+        count = 1000
+        foo = True
+        while foo or (len(children_todo) > 0 and count > 0):
+            foo = False
+            print(count)
+            children_todo = []
+            for child in children:
+                children_row = get_node_row(child)
+                graphwriter.writerow({child + children_row})
+                if len(children_row) > 0:
+                    children_todo.extend(get_node_row_list(children_row[1:len(children_row)]))  # omit comma
+            children = children_todo
+            count = count - 1
+
+    print("(Should be) done writing!", count)
+
+
+def get_node_row(conceptid):
+    children = get_children_ids(conceptid)
+    children_string = ""
+    for child in children:
+        children_string += "," + child
+
+    return children_string
+
+
+def get_node_row_list(node_row):
+    children_list = []
+    for child in node_row.split(","):
+        children_list.append(child)
+    return children_list
+
+write_graph_to_csv()
 
 
 # KK
