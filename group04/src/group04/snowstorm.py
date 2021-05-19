@@ -250,8 +250,70 @@ def get_node_row_list(node_row):
         children_list.append(child)
     return children_list
 
-write_graph_to_csv()
 
+def get_Ihccontology_as_df():
+    df = pd.read_csv("ihCCOntology_Excerpt.csv")
+    df_after_dropping = df.drop(df.columns[0], axis=1, inplace=True)
+    return df
+
+
+def get_all_parameternames():
+    return get_Ihccontology_as_df()["Parametername"]
+
+
+def check_possible_parent(conceptid):
+    try:
+        walk_to_granddad(conceptid)
+        return True
+    except KeyError:
+        return False
+    except ValueError:
+        return False
+
+
+def get_parameternames_with_conceptids():
+    Parameternames = list(get_all_parameternames())
+    conceptids = list()
+    for term in Parameternames:
+        conceptids.append(get_conceptid_by_term(term))
+    df = pd.DataFrame(list(zip(Parameternames, conceptids)),
+                      columns=['Parametername', 'conceptid'])
+    return df
+
+
+def get_all_edges_between_parameters():
+    df = get_parameternames_with_conceptids()
+    not_found_concepts = df[(df["conceptid"].isnull())]
+    df = df.dropna()
+    failed_request = []
+    paths = []
+    for i in df["conceptid"]:
+        if check_possible_parent(i):
+            single_list = walk_to_granddad(i)
+            paths.append(single_list)
+        else:
+            failed_request.append(i)
+    sources = []
+    targets = []
+
+    for m in paths:
+        for n in range(len(m)):
+            try:
+                targets.append(m[n + 1])
+                sources.append(m[n])
+            except IndexError:
+                continue
+
+    sources_as_series = pd.Series(sources)
+    targets_as_series = pd.Series(targets)
+    edges = pd.DataFrame({"source": sources_as_series.values, "target": targets_as_series.values})
+    print("Not Found", not_found_concepts)
+    print("Failed request", failed_request)
+    return edges
+
+
+write_graph_to_csv()
+get_all_edges_between_parameters()
 
 # KK
 # childernids = get_childern_ids("10200004")
