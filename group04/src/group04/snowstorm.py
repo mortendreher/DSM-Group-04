@@ -69,6 +69,20 @@ def get_inbound_relationships(conceptid):
 # print("a"+result["inboundRelationships"][0]["sourceId"])
 
 
+# RA
+def get_descendant_count(conceptid):
+    params = {"conceptId": conceptid}
+    response = requests.get(
+        "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
+        "?descendantCountForm=additional", params=params)
+
+    resp = response.json()
+    return str(resp["descendantCount"])
+
+
+# des_count_liver = get_descendant_count("10200004")
+
+
 # KK
 def get_children(conceptid):
     params = {"conceptId": conceptid}
@@ -340,7 +354,7 @@ def add_parents_to_graph(conceptid):
 
 
 
-# R:
+# RA:
 # adds the first found id to the entered dataframe using the function "find_concepts"
 def add_first_id_found(file):
     counter = 0
