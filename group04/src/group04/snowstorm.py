@@ -118,6 +118,15 @@ def get_parents_ids(conceptid):
     return response.json()
 
 
+def get_conceptid_by_term(term):
+    try:
+        response = requests.get(
+            "https://snowstorm.test-nictiz.nl/MAIN/concepts?term=" + term + "%20&offset=0&limit=50")
+        return response.json()["items"][0].get("conceptId")
+    except IndexError:
+        return None
+
+
 # MD: find lowest common parent for two nodes
 def get_common_parent(conceptid_1, conceptid_2):
     if conceptid_1 == conceptid_2 or conceptid_1 == granddad_id or conceptid_2 == granddad_id:
@@ -250,17 +259,17 @@ def get_node_row_list(node_row):
         children_list.append(child)
     return children_list
 
-
+#KK :read csv file ,with droping first empty column
 def get_Ihccontology_as_df():
     df = pd.read_csv("ihCCOntology_Excerpt.csv")
     df_after_dropping = df.drop(df.columns[0], axis=1, inplace=True)
     return df
 
-
+#KK:getting just all parameter name
 def get_all_parameternames():
     return get_Ihccontology_as_df()["Parametername"]
 
-
+#KK:check if path to granddad without unexpected glichtes is built
 def check_possible_parent(conceptid):
     try:
         walk_to_granddad(conceptid)
@@ -270,7 +279,7 @@ def check_possible_parent(conceptid):
     except ValueError:
         return False
 
-
+#KK:find concept id for each parameter name and save in new column
 def get_parameternames_with_conceptids():
     Parameternames = list(get_all_parameternames())
     conceptids = list()
@@ -280,7 +289,7 @@ def get_parameternames_with_conceptids():
                       columns=['Parametername', 'conceptid'])
     return df
 
-
+#KK: save all edges sources and targets of parameters in DataFrame to suit with a from_pandas_edgelist function
 def get_all_edges_between_parameters():
     df = get_parameternames_with_conceptids()
     not_found_concepts = df[(df["conceptid"].isnull())]
@@ -312,9 +321,9 @@ def get_all_edges_between_parameters():
     return edges
 
 
-write_graph_to_csv()
+#write_graph_to_csv()
 get_all_edges_between_parameters()
-
+# to calculate the distance between parameters you can use get_distance_between_two_nodes from Dashboard
 # KK
 # childernids = get_childern_ids("10200004")
 # for childid in childernids:
