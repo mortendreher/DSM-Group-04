@@ -321,8 +321,73 @@ def get_all_edges_between_parameters():
     return edges
 
 
-#write_graph_to_csv()
+#KK:write_graph_to_csv()
 get_all_edges_between_parameters()
+
+#KK:return just concept ID´s for valid parameters
+def get_all_valid_conceptids():
+    df = get_parameternames_with_conceptids()
+    not_found_concepts = df[(df["conceptid"].isnull())]
+    df = df.dropna()
+    validconcepts = []
+    for i in df["conceptid"]:
+        if check_possible_parent(i):
+            parameter = df["Parametername"]
+            validconcepts.append(i)
+    return validconcepts
+
+
+# KK:return just valid parameternames
+def get_all_valid_parametername():
+    df = get_parameternames_with_conceptids()
+    not_found_concepts = df[(df["conceptid"].isnull())]
+    df = df.dropna()
+    validconcepts = []
+    for i in df["conceptid"]:
+        if check_possible_parent(i):
+            parameter = df["Parametername"]
+            validconcepts.append(i)
+    validparameters = []
+    validindicies = []
+    for i in validconcepts:
+        ind, = df.index[df["conceptid"] == i]
+        validindicies.append(ind)
+    for i in validindicies:
+        para = df.loc[i][0]
+        validparameters.append(para)
+    return validparameters
+
+
+# KK:save and suit matrix dataframe to save it as xlsx file
+def distance_matrix_as_df():
+    dictionary = dict()
+    validparams = get_all_parameternames()
+    validconcepts = get_all_valid_conceptids()
+    for column in validconcepts:
+        dictionary[column] = []
+        for row in validconcepts:
+            val = get_distance_between_two_nodes(G, column, row)
+            dictionary[column].append(val)
+
+    df = pd.DataFrame(dictionary)
+    s = pd.DataFrame({"Parametername": list(validparams)})
+    df["Parametername"] = s["Parametername"]
+    df.set_index(df["Parametername"], inplace=True)
+    colnames = [x for x in df["Parametername"].values]
+    df.drop(columns=["Parametername"], inplace=True, axis=1)
+    df.columns = colnames
+    return df
+
+
+# KK:save as xlsx file
+def from_df_to_xlsx():
+    df = distance_matrix_as_df()
+    writer = pd.ExcelWriter('output.xlsx')
+    # write dataframe to excel
+    df.to_excel(writer)
+    # save the excel
+    writer.save()
+#from_df_to_xlsx()
 # to calculate the distance between parameters you can use get_distance_between_two_nodes from Dashboard
 # KK
 # childernids = get_childern_ids("10200004")
