@@ -1,3 +1,4 @@
+import networkx
 import numpy as np
 import requests
 import networkx as nx
@@ -65,8 +66,8 @@ def get_inbound_relationships(conceptid):
 
 
 # result = get_inbound_relationships("10200004")
-# print(result)
-# print("a"+result["inboundRelationships"][0]["sourceId"])
+# print(len(result))
+#print("a"+result["inboundRelationships"][0]["sourceId"])
 
 
 # RA
@@ -89,6 +90,7 @@ def get_children(conceptid):
     response = request_snowstorm_burst(
         "https://snowstorm.test-nictiz.nl/browser/MAIN/concepts/" + conceptid +
         "/children?form =inferred&includeDescendantCount=false", params=params)
+    # response = request_snowstorm_burst("localhost:8080", params=params)
     return response.json()
 
 
@@ -258,6 +260,35 @@ def get_node_row_list(node_row):
     for child in node_row.split(","):
         children_list.append(child)
     return children_list
+
+
+def read_graph_from_csv():
+    G_large = networkx.DiGraph()
+    with open('graph_no_duplicate.csv', newline='') as file:
+        reader = csv.reader(file, delimiter=',')
+        for row in reader:
+            # parent = str(row).split(",")[0]
+            parent = row[0]
+            if parent not in G_large:
+                G_large.add_node(parent)
+            for string in row:
+                if string != parent:
+                    G_large.add_edge(parent, string, weight=1000.0, capacity=1000.0)
+                    G_large.add_edge(string, parent, weight=1, capacity=1)
+
+    return G_large
+
+
+print("Reading")
+G_large = read_graph_from_csv()
+print(G_large.number_of_nodes())
+print(G_large.number_of_edges())
+
+
+flow_value, flow_dict = nx.maximum_flow(G_large, granddad_id, "900000000000441003")
+# "361716006", "361715005"
+# "772755004", "258774008"
+print(flow_value)
 
 #KK :read csv file ,with droping first empty column
 def get_Ihccontology_as_df():
