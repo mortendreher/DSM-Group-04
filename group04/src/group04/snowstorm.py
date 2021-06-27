@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import time
 import csv
 import pandas as pd
+import scipy
 
 # LA
 # class Node
@@ -273,7 +274,7 @@ def read_graph_from_csv():
                 G_large.add_node(parent)
             for string in row:
                 if string != parent:
-                    G_large.add_edge(parent, string, weight=1000.0, capacity=1000.0)
+                    G_large.add_edge(parent, string, weight=1, capacity=1)
                     G_large.add_edge(string, parent, weight=1, capacity=1)
 
     return G_large
@@ -285,10 +286,24 @@ print(G_large.number_of_nodes())
 print(G_large.number_of_edges())
 
 
-flow_value, flow_dict = nx.maximum_flow(G_large, granddad_id, "900000000000441003")
+# flow_value, flow_dict = nx.maximum_flow(G_large, granddad_id, "900000000000441003")
 # "361716006", "361715005"
 # "772755004", "258774008"
-print(flow_value)
+# print(flow_value)
+# print(nx.average_clustering(G_large))
+
+# print(nx.closeness_centrality(G_large, "66071002"))
+# print(nx.closeness_centrality(G_large, "840539006"))
+
+
+
+def getMaxFlow(conceptid1, conceptid2):
+    m_flow_value, m_flow_dict = nx.maximum_flow(G_large, conceptid1, conceptid2)
+    return m_flow_value
+
+
+print("MaxFlow HBV / HCV", getMaxFlow("66071002", "50711007"))
+print("MaxFlow COVID / Lung excision", getMaxFlow("840539006", "119746007"))
 
 #KK :read csv file ,with droping first empty column
 def get_Ihccontology_as_df():
